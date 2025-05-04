@@ -1,0 +1,91 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Clustering}
+\date{Mar 5, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Unsupervised Learning Setting}
+
+Given data points $x_i \in \mathbb{R}^d$, the task is to partition the data into $k$ clusters without labels.
+
+\section*{Agglomerative Clustering (Bottom-Up)}
+
+\begin{itemize}
+    \item Initialize each point in its own cluster.
+    \item While there is more than one cluster:
+    \begin{itemize}
+        \item Find the nearest pair of distinct clusters $C_i, C_j$
+        \item Merge them into a new cluster
+        \item Remove $C_i, C_j$ from the cluster list, add the new cluster
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Measures of Cluster Distance}
+
+\begin{itemize}
+    \item \textbf{Single Link:} minimum pairwise distance
+    \[
+    d_{\text{single}}(C_i, C_j) = \min_{x \in C_i, y \in C_j} \|x - y\|
+    \]
+    \item \textbf{Complete Link:} maximum pairwise distance
+    \[
+    d_{\text{complete}}(C_i, C_j) = \max_{x \in C_i, y \in C_j} \|x - y\|
+    \]
+    \item \textbf{Mean Link:} distance between cluster means
+    \[
+    d_{\text{mean}}(C_i, C_j) = \|\mu_i - \mu_j\|, \quad \mu_i = \frac{1}{|C_i|} \sum_{x \in C_i} x
+    \]
+\end{itemize}
+
+\subsection*{Clustering Objective}
+
+Goal: Find a clustering that minimizes the total within-cluster variance:
+\[
+J = \sum_{i=1}^k \sum_{x \in C_i} \|x - \mu_i\|^2
+\]
+
+Merging clusters updates the means and affects $J$:
+\[
+\mu_{\text{new}} = \frac{n_i \mu_i + n_j \mu_j}{n_i + n_j}
+\]
+
+\section*{k-Means Clustering}
+
+\subsection*{Objective Function}
+
+\[
+J = \sum_{i=1}^k \sum_{x \in C_i} \|x - \mu_i\|^2
+\]
+
+\subsection*{Algorithm}
+
+\begin{enumerate}
+    \item Initialize $k$ cluster centers $\mu_1, \dots, \mu_k$
+    \item Repeat until convergence:
+    \begin{enumerate}
+        \item Assign each point to the nearest cluster:
+        \[
+        c_i = \arg\min_j \|x_i - \mu_j\|^2
+        \]
+        \item Update each cluster mean:
+        \[
+        \mu_j = \frac{1}{|C_j|} \sum_{x_i \in C_j} x_i
+        \]
+    \end{enumerate}
+\end{enumerate}
+
+\subsection*{Properties}
+
+\begin{itemize}
+    \item The objective $J$ decreases monotonically.
+    \item The algorithm converges in a finite number of steps.
+    \item The decision boundaries between clusters are linear (hyperplanes).
+    \item For $k = 2$, the boundary between $\mu_1$ and $\mu_2$ is the perpendicular bisector (hyperplane).
+\end{itemize}
+
+\end{document}

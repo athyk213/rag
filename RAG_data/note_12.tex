@@ -1,0 +1,104 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Graph Clustering and Spectral Methods}
+\date{Apr 7, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Graph Basics}
+
+A graph $G = (V, E)$ can be represented by a weighted adjacency matrix $A \in \mathbb{R}^{n \times n}$, where:
+\[
+A_{ij} = 
+\begin{cases}
+w_{ij} & \text{if } (i, j) \in E \\
+0 & \text{otherwise}
+\end{cases}
+\]
+
+\section*{Clustering Goal}
+
+Partition the graph into $k$ clusters of nodes. For example, when $k = 2$, divide $V = V_1 \cup V_2$ such that $V_1 \cap V_2 = \emptyset$.
+
+Applications include:
+\begin{itemize}
+    \item Social networks
+    \item Web data
+    \item Image segmentation
+    \item Circuit partitioning
+\end{itemize}
+
+\subsection*{Cut}
+
+\[
+\text{Cut}(V_1, V_2) = \sum_{i \in V_1, j \in V_2} A_{ij}
+\]
+
+Minimizing the cut alone can lead to unbalanced partitions.
+
+\subsection*{Balanced Cuts}
+
+One way to enforce balance is through constraints like $|V_1| \approx |V_2|$.
+
+A common heuristic is:
+\begin{itemize}
+    \item Swap vertices between clusters to reduce cut cost
+    \item Greedy algorithms like the Kernighan-Lin or Fiduccia-Mattheyses algorithms
+\end{itemize}
+
+\subsection*{Ratio Cut (RC)}
+
+\[
+\text{RC}(V_1, V_2) = \frac{\text{Cut}(V_1, V_2)}{|V_1|} + \frac{\text{Cut}(V_1, V_2)}{|V_2|}
+\]
+
+\subsection*{Normalized Cut (NC)}
+
+\[
+\text{NC}(V_1, V_2) = \frac{\text{Cut}(V_1, V_2)}{\text{vol}(V_1)} + \frac{\text{Cut}(V_1, V_2)}{\text{vol}(V_2)}
+\]
+where $\text{vol}(V_i) = \sum_{v \in V_i} \deg(v)$
+
+Minimizing NC is equivalent to maximizing \textbf{Normalized Association}.
+
+\section*{Spectral Clustering}
+
+A heuristic for minimizing RC/NC.
+
+\subsection*{Steps}
+
+\begin{enumerate}
+    \item Construct the degree matrix $D$:
+    \[
+    D_{ii} = \deg(i) = \sum_j A_{ij}
+    \]
+
+    \item Define the unnormalized Laplacian:
+    \[
+    L = D - A
+    \]
+    or normalized Laplacian:
+    \[
+    L_{\text{sym}} = D^{-1/2} L D^{-1/2} = I - D^{-1/2} A D^{-1/2}
+    \]
+
+    \item Compute the first $k$ eigenvectors of $L$ (excluding the eigenvector of all ones for connected graphs).
+
+    \item Stack the eigenvectors column-wise to form matrix $Y \in \mathbb{R}^{n \times k}$.
+
+    \item Run k-means on the rows of $Y$ to obtain clusters.
+\end{enumerate}
+
+\subsection*{Properties}
+
+\begin{itemize}
+    \item $L$ is symmetric positive semi-definite
+    \item The multiplicity of eigenvalue 0 corresponds to the number of connected components
+    \item Spectral clustering provides a global heuristic for graph clustering
+\end{itemize}
+
+\end{document}

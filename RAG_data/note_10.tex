@@ -1,0 +1,112 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{SVMs and Duality}
+\date{Feb 24, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Constrained Optimization Problem}
+
+\[
+\min_x f(x) \quad \text{subject to } g_i(x) \leq 0, \quad h_j(x) = 0
+\]
+
+Here:
+\begin{itemize}
+    \item $f, g_i, h_j : \mathbb{R}^n \to \mathbb{R}$
+    \item $\lambda_i$ are Lagrange multipliers for inequality constraints
+    \item $\mu_j$ are Lagrange multipliers for equality constraints
+\end{itemize}
+
+\section*{Lagrangian}
+
+\[
+\mathcal{L}(x, \lambda, \mu) = f(x) + \sum_i \lambda_i g_i(x) + \sum_j \mu_j h_j(x)
+\]
+
+\textbf{Dual function:}
+\[
+g(\lambda, \mu) = \inf_x \mathcal{L}(x, \lambda, \mu)
+\]
+
+\textbf{Dual feasible:} $\lambda_i \geq 0$
+
+\textbf{Weak Duality:} For any dual feasible $(\lambda, \mu)$,
+\[
+g(\lambda, \mu) \leq f(x) \quad \text{for all primal feasible } x
+\]
+
+\textbf{Strong Duality:} If primal and dual feasible solutions exist and:
+\[
+g(\lambda^*, \mu^*) = f(x^*)
+\]
+then strong duality holds.
+
+\section*{KKT Conditions (Karush-Kuhn-Tucker)}
+
+Necessary conditions for optimality (under convexity):
+\begin{align*}
+&\text{Primal feasibility: } g_i(x) \leq 0, \; h_j(x) = 0 \\
+&\text{Dual feasibility: } \lambda_i \geq 0 \\
+&\text{Complementary slackness: } \lambda_i g_i(x) = 0 \\
+&\text{Stationarity: } \nabla_x \mathcal{L}(x, \lambda, \mu) = 0
+\end{align*}
+
+\section*{Support Vector Machine (SVM)}
+
+\textbf{Hard-margin SVM primal problem:}
+\[
+\min_w \frac{1}{2} \|w\|^2 \quad \text{subject to } y_i (w^T x_i) \geq 1
+\]
+
+\textbf{Lagrangian:}
+\[
+\mathcal{L}(w, \alpha) = \frac{1}{2} \|w\|^2 - \sum_{i=1}^N \alpha_i \left( y_i w^T x_i - 1 \right)
+\]
+
+\textbf{Dual:}
+\[
+\max_\alpha \sum_i \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j y_i y_j x_i^T x_j \quad \text{subject to } \alpha_i \geq 0, \sum_i \alpha_i y_i = 0
+\]
+
+\textbf{Solution:}
+\[
+w = \sum_i \alpha_i y_i x_i
+\]
+
+\subsection*{Soft-margin SVM}
+
+Allow some violations of the margin by introducing slack variables:
+\[
+y_i w^T x_i \geq 1 - \xi_i, \quad \xi_i \geq 0
+\]
+
+\textbf{Primal:}
+\[
+\min_{w, \xi} \frac{1}{2} \|w\|^2 + C \sum_i \xi_i
+\]
+
+\textbf{Dual:}
+\[
+\max_\alpha \sum_i \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j y_i y_j x_i^T x_j \quad \text{subject to } 0 \leq \alpha_i \leq C, \sum_i \alpha_i y_i = 0
+\]
+
+\subsection*{Complementary Slackness in SVM}
+
+\[
+\alpha_i (y_i w^T x_i - 1 + \xi_i) = 0
+\]
+
+\section*{Non-linearly Separable Case}
+
+Use kernel trick:
+\[
+K(x_i, x_j) = \phi(x_i)^T \phi(x_j)
+\]
+Replace all $x_i^T x_j$ in dual with $K(x_i, x_j)$.
+
+\end{document}

@@ -1,0 +1,81 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Matrix Factorization for Recommendation}
+\date{Feb 3, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Missing Value Estimation in Recommender Systems}
+
+We aim to estimate missing values in a user-item rating matrix $R$.
+
+\subsection*{Matrix Completion and Matrix Factorization}
+
+Given a matrix $R$ with missing entries:
+\[
+R \approx U M^T
+\]
+where:
+\begin{itemize}
+    \item $U \in \mathbb{R}^{n \times k}$: user latent feature matrix
+    \item $M \in \mathbb{R}^{m \times k}$: item (movie) latent feature matrix
+    \item $k$: number of latent features
+\end{itemize}
+
+Row $i$ of $U$ is the latent feature vector $u_i^T$ for user $i$.
+
+Row $j$ of $M$ is the latent feature vector $m_j^T$ for item $j$.
+
+\subsection*{Objective Function}
+
+Let $K$ be the set of all observed ratings:
+\[
+K = \{(i, j) \mid R_{ij} \text{ is observed} \}
+\]
+
+The goal is to minimize the squared error over observed entries:
+\[
+\min_{U, M} \sum_{(i,j) \in K} (R_{ij} - u_i^T m_j)^2
+\]
+
+\subsection*{Alternating Minimization (ALS)}
+
+Alternating Least Squares minimizes over $U$ and $M$ alternately:
+\begin{enumerate}
+    \item Fix $U$, solve for $M$
+    \item Fix $M$, solve for $U$
+    \item Repeat until convergence
+\end{enumerate}
+
+\textbf{Fix $U$, solve for $M$:}
+
+Let $I(i)$ be the set of item indices rated by user $i$. Then for each $m_j$:
+\[
+\min_{m_j} \sum_{i \in I(j)} (R_{ij} - u_i^T m_j)^2
+\]
+This is a ridge regression problem.
+
+\subsection*{Computational Cost}
+
+Forming the normal equations for one user involves:
+\[
+O(k^2 \cdot |I(i)|)
+\]
+Solving the $k \times k$ system:
+\[
+O(k^3)
+\]
+Total cost: $O(k^2 E)$ where $E$ is the number of observed ratings.
+
+\subsection*{Other Optimization Methods}
+
+\begin{itemize}
+    \item Stochastic Gradient Descent (SGD)
+    \item Coordinate Descent
+\end{itemize}
+
+\end{document}

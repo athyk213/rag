@@ -1,0 +1,114 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Perceptron and Support Vector Machines (SVM)}
+\date{Feb 19, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Perceptron Algorithm}
+
+Given training data $\{(x_i, y_i)\}_{i=1}^N$ where $y_i \in \{-1, +1\}$.
+
+\subsection*{Signed Distance to Hyperplane}
+
+For a hyperplane defined by $w^T x = 0$, the signed distance of a point $x$ is:
+\[
+\frac{w^T x}{\|w\|}
+\]
+
+For correctly classified points:
+\[
+y_i (w^T x_i) > 0
+\]
+For misclassified points:
+\[
+y_i (w^T x_i) \leq 0
+\]
+
+\subsection*{Perceptron Criterion}
+
+Minimize the sum over misclassified points:
+\[
+D(w) = -\sum_{i \in \mathcal{M}} y_i (w^T x_i)
+\]
+
+\textbf{Update Rule (Stochastic Gradient Descent):}
+\[
+w \leftarrow w + \eta y_i x_i \quad \text{if } y_i(w^T x_i) \leq 0
+\]
+
+\subsection*{Algorithm}
+
+\begin{itemize}
+    \item Initialize $w$
+    \item For each training point $(x_i, y_i)$
+    \begin{itemize}
+        \item If $y_i w^T x_i \leq 0$: update $w \leftarrow w + y_i x_i$
+    \end{itemize}
+    \item Repeat until no misclassifications
+\end{itemize}
+
+\textbf{Convergence:}
+\begin{itemize}
+    \item Guaranteed to converge if data is linearly separable
+    \item May not converge if data is not separable
+    \item Resulting hyperplane may depend on data order
+\end{itemize}
+
+\section*{Support Vector Machines (SVM)}
+
+\subsection*{Margin Maximization}
+
+The signed distance from $x_i$ to the hyperplane is:
+\[
+\frac{y_i (w^T x_i)}{\|w\|}
+\]
+
+We enforce:
+\[
+y_i w^T x_i \geq C, \quad \forall i
+\]
+
+Set $\|w\| = 1/C$, leading to:
+\[
+y_i w^T x_i \geq 1
+\]
+
+\subsection*{Primal SVM Problem}
+
+\[
+\min_w \frac{1}{2} \|w\|^2 \quad \text{subject to } y_i w^T x_i \geq 1, \; \forall i
+\]
+
+\subsection*{General Constrained Optimization Problem}
+
+\[
+\min f(x) \quad \text{subject to } g_i(x) \leq 0, \; h_j(x) = 0
+\]
+
+\textbf{Lagrangian:}
+\[
+\mathcal{L}(x, \lambda, \mu) = f(x) + \sum_i \lambda_i g_i(x) + \sum_j \mu_j h_j(x)
+\]
+where:
+\begin{itemize}
+    \item $\lambda_i$ are Lagrange multipliers for inequality constraints
+    \item $\mu_j$ are Lagrange multipliers for equality constraints
+\end{itemize}
+
+\textbf{Dual Feasibility:}
+\[
+\lambda_i \geq 0
+\]
+
+\textbf{Strong Duality:}
+If there exists $x$, $\lambda$, and $\mu$ such that KKT conditions hold, then:
+\[
+\min f(x) = \max_{\lambda, \mu} \mathcal{L}(x, \lambda, \mu)
+\]
+
+\end{document}

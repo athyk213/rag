@@ -1,0 +1,79 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Logistic Regression}
+\date{Feb 12, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Indicator Vectors}
+
+Let $y_i \in \{1, 2, \dots, K\}$ denote the class label.
+
+For classification, define an indicator vector as:
+\[
+\mathbf{y}_i = [0, 0, \dots, 1, \dots, 0]^T
+\]
+where the $j$-th element is 1 if $y_i = j$.
+
+\section*{Linear Discriminants}
+
+For each class $j$, define a linear discriminant function:
+\[
+g_j(x) = \mathbf{w}_j^T \mathbf{x}
+\]
+Prediction is made by choosing the class with the largest score:
+\[
+\hat{y} = \arg\max_j g_j(x)
+\]
+
+\section*{Logistic Regression: Binary Case}
+
+Assume we have two classes, $C_1$ and $C_2$.
+
+The logistic model is:
+\[
+P(C_1 | \mathbf{x}) = \frac{1}{1 + \exp(-\mathbf{w}^T \mathbf{x})}
+\]
+
+Let $y_i = 1$ if $\mathbf{x}_i \in C_1$, and $y_i = 0$ otherwise.
+
+The likelihood is:
+\[
+p(\mathcal{D} | \mathbf{w}) = \prod_{i=1}^N p(y_i | \mathbf{x}_i; \mathbf{w}) = \prod_{i=1}^N \left[\sigma(\mathbf{w}^T \mathbf{x}_i)\right]^{y_i} \left[1 - \sigma(\mathbf{w}^T \mathbf{x}_i)\right]^{1 - y_i}
+\]
+where $\sigma(z) = \frac{1}{1 + e^{-z}}$ is the sigmoid function.
+
+\section*{Log-Likelihood}
+
+The log-likelihood is:
+\[
+\mathcal{L}(\mathbf{w}) = \sum_{i=1}^N \left[ y_i \log \sigma(\mathbf{w}^T \mathbf{x}_i) + (1 - y_i) \log (1 - \sigma(\mathbf{w}^T \mathbf{x}_i)) \right]
+\]
+
+\section*{Gradient of Log-Likelihood}
+
+\[
+\nabla_{\mathbf{w}} \mathcal{L} = \sum_{i=1}^N (y_i - \sigma(\mathbf{w}^T \mathbf{x}_i)) \mathbf{x}_i
+\]
+
+\section*{Optimization Methods}
+
+To find $\mathbf{w}$ that maximizes $\mathcal{L}$:
+\begin{itemize}
+    \item \textbf{Gradient Ascent}: $\mathbf{w} \leftarrow \mathbf{w} + \eta \nabla_{\mathbf{w}} \mathcal{L}$
+    \item \textbf{Newton-Raphson method}: requires computing the Hessian
+    \item \textbf{Stochastic Gradient Descent (SGD)} for large $N$
+\end{itemize}
+
+\section*{Regularization}
+
+To prevent overfitting, regularization can be applied:
+\[
+\mathcal{L}_{\text{reg}} = \mathcal{L} - \frac{\lambda}{2} \|\mathbf{w}\|^2
+\]
+
+\end{document}

@@ -1,0 +1,90 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Non-Linearly Separable Data and Kernel SVMs}
+\date{March 3, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Soft Margin SVM and Dual Formulation}
+
+Given training data $\{(x_i, y_i)\}_{i=1}^N$ with $y_i \in \{-1, +1\}$, the primal optimization problem is:
+
+\[
+\min_{w, b, \xi} \quad \frac{1}{2} \|w\|^2 + C \sum_{i=1}^N \xi_i
+\]
+subject to:
+\[
+y_i(w^T x_i + b) \geq 1 - \xi_i, \quad \xi_i \geq 0
+\]
+
+\subsection*{Dual Problem}
+
+Introducing Lagrange multipliers $\alpha_i \geq 0$, the dual form is:
+
+\[
+\max_{\alpha} \quad \sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i,j=1}^N \alpha_i \alpha_j y_i y_j x_i^T x_j
+\]
+subject to:
+\[
+\sum_{i=1}^N \alpha_i y_i = 0, \quad 0 \leq \alpha_i \leq C
+\]
+
+The optimal weight vector is recovered by:
+\[
+w = \sum_{i=1}^N \alpha_i y_i x_i
+\]
+
+\section*{Kernel Trick}
+
+We define a kernel function $K(x_i, x_j) = \phi(x_i)^T \phi(x_j)$ to implicitly map data into a higher-dimensional space.
+
+Using kernels, the dual becomes:
+\[
+\max_{\alpha} \quad \sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i,j=1}^N \alpha_i \alpha_j y_i y_j K(x_i, x_j)
+\]
+
+\subsection*{Examples of Kernel Functions}
+
+\begin{itemize}
+    \item Polynomial kernel of degree $d$:
+    \[
+    K(x, x') = (x^T x' + 1)^d
+    \]
+    \item Radial Basis Function (Gaussian) kernel:
+    \[
+    K(x, x') = \exp\left(-\gamma \|x - x'\|^2\right)
+    \]
+\end{itemize}
+
+\section*{Loss Functions and Regularization}
+
+\subsection*{Regression}
+
+\begin{itemize}
+    \item Ridge Regression: squared loss with $L_2$ regularization
+    \item Lasso Regression: squared loss with $L_1$ regularization
+\end{itemize}
+
+\subsection*{Classification}
+
+\begin{itemize}
+    \item Logistic Regression: logistic loss with $L_2$ or $L_1$ penalty
+    \item SVM: hinge loss
+    \[
+    \max(0, 1 - y_i w^T x_i)
+    \]
+\end{itemize}
+
+\section*{Libraries}
+
+Common libraries supporting SVMs with kernels include:
+\begin{itemize}
+    \item LIBLINEAR
+    \item LIBSVM
+\end{itemize}
+
+\end{document}

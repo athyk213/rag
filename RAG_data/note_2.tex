@@ -1,0 +1,105 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Linear Algebra Review}
+\date{Jan 22, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Vectors in $\mathbb{R}^d$}
+
+A vector $x \in \mathbb{R}^d$ can be written as $x = (x_1, x_2, \dots, x_d)^T$.
+
+\subsection*{Vector Norms}
+
+A function $\|\cdot\| : \mathbb{R}^d \rightarrow \mathbb{R}$ is a norm if it satisfies:
+\begin{enumerate}
+    \item Nonnegativity: $\|x\| \geq 0$ and $\|x\| = 0 \iff x = 0$
+    \item Homogeneity: $\|\alpha x\| = |\alpha| \|x\|$
+    \item Triangle inequality: $\|x + y\| \leq \|x\| + \|y\|$
+\end{enumerate}
+
+Common norms:
+\begin{itemize}
+    \item $\ell_2$ norm: $\|x\|_2 = \sqrt{\sum_i x_i^2}$
+    \item $\ell_1$ norm: $\|x\|_1 = \sum_i |x_i|$
+    \item $\ell_\infty$ norm: $\|x\|_\infty = \max_i |x_i|$
+    \item $\ell_p$ norm: $\|x\|_p = \left( \sum_i |x_i|^p \right)^{1/p}$
+\end{itemize}
+
+\subsection*{Cauchy-Schwarz Inequality}
+
+For vectors $x, y \in \mathbb{R}^d$:
+\[
+|\langle x, y \rangle| \leq \|x\| \|y\|
+\]
+Equality if and only if $x$ and $y$ are linearly dependent.
+
+\section*{Matrix Norms}
+
+A matrix norm $\|\cdot\| : \mathbb{R}^{m \times n} \rightarrow \mathbb{R}$ satisfies:
+\begin{enumerate}
+    \item Nonnegativity: $\|A\| \geq 0$
+    \item Homogeneity: $\|\alpha A\| = |\alpha| \|A\|$
+    \item Triangle inequality: $\|A + B\| \leq \|A\| + \|B\|$
+\end{enumerate}
+
+\subsection*{Examples of Matrix Norms}
+
+\begin{itemize}
+    \item Frobenius norm:
+    \[
+    \|A\|_F = \sqrt{\sum_{i,j} A_{ij}^2}
+    \]
+    \item Operator norm (spectral norm):
+    \[
+    \|A\|_2 = \max_{\|x\|=1} \|Ax\| = \sigma_{\max}(A)
+    \]
+\end{itemize}
+
+\subsection*{Condition Number}
+
+For invertible $A$:
+\[
+\kappa(A) = \|A\| \|A^{-1}\| = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}
+\]
+
+\section*{Eigenvalues and Eigenvectors}
+
+Given $A \in \mathbb{R}^{n \times n}$, a scalar $\lambda$ is an eigenvalue if:
+\[
+Ax = \lambda x \quad \text{for some } x \neq 0
+\]
+
+\subsection*{Properties}
+
+\begin{itemize}
+    \item $\det(A - \lambda I) = 0$ gives the characteristic polynomial.
+    \item If $A$ is symmetric: all eigenvalues are real, and eigenvectors are orthogonal.
+    \item $A$ is positive semidefinite if $x^T A x \geq 0$ for all $x$.
+    \item $A$ is positive definite if $x^T A x > 0$ for all $x \neq 0$.
+\end{itemize}
+
+\section*{Singular Value Decomposition (SVD)}
+
+For any matrix $A \in \mathbb{R}^{m \times n}$:
+\[
+A = U \Sigma V^T
+\]
+where:
+\begin{itemize}
+    \item $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$ are orthogonal matrices
+    \item $\Sigma \in \mathbb{R}^{m \times n}$ is a diagonal matrix of singular values
+\end{itemize}
+
+\subsection*{Properties}
+
+\begin{itemize}
+    \item $U^T U = I$, $V^T V = I$
+    \item SVD exists for any matrix (not just square)
+\end{itemize}
+
+\end{document}

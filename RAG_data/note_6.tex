@@ -1,0 +1,123 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Probability Theory Background}
+\date{Feb 5, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Joint Distribution}
+
+Let $X, Y$ be random variables. The joint distribution is denoted:
+\[
+p(X, Y)
+\]
+
+\subsection*{Marginalization (Sum Rule)}
+
+\[
+p(X) = \sum_Y p(X, Y), \quad p(Y) = \sum_X p(X, Y)
+\]
+
+\subsection*{Conditional Probability}
+
+\[
+p(Y|X) = \frac{p(X, Y)}{p(X)} \quad \text{(if } p(X) \neq 0)
+\]
+
+\subsection*{Bayes' Theorem}
+
+\[
+p(Y|X) = \frac{p(X|Y)p(Y)}{p(X)} \quad \text{where } p(X) = \sum_Y p(X|Y)p(Y)
+\]
+
+\subsection*{Independence}
+
+Variables $X$ and $Y$ are independent if:
+\[
+p(X, Y) = p(X)p(Y)
+\]
+
+\section*{Example: Box with Fruit}
+
+\begin{itemize}
+    \item $p(B) = 0.6$, $p(E) = 0.4$
+    \item $p(\text{apple} | B)$, $p(\text{orange} | E)$ etc.
+    \item Use Bayes' rule to find $p(B|\text{apple})$
+\end{itemize}
+
+\section*{Continuous Distributions}
+
+\subsection*{Probability Density Function (PDF)}
+
+\[
+p(x) \geq 0, \quad \int p(x) dx = 1
+\]
+
+\subsection*{Expectation}
+
+\[
+\mathbb{E}[f(x)] = \int p(x) f(x) dx
+\]
+
+\[
+\mathbb{E}[x] = \int x p(x) dx
+\]
+
+\[
+\mathbb{E}[f(x)^2] = \int f(x)^2 p(x) dx
+\]
+
+\subsection*{Variance and Covariance}
+
+\[
+\text{Var}(x) = \mathbb{E}[x^2] - (\mathbb{E}[x])^2
+\]
+
+\[
+\text{Cov}(x, y) = \mathbb{E}[xy] - \mathbb{E}[x]\mathbb{E}[y]
+\]
+
+\[
+\text{If } X \perp Y \Rightarrow \text{Cov}(X, Y) = 0
+\]
+
+\subsection*{Correlation}
+
+\[
+\text{Corr}(X, Y) = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}}
+\]
+
+\section*{Multivariate Gaussian Distribution}
+
+Let $x \in \mathbb{R}^d$ with mean vector $\mu$ and covariance matrix $\Sigma$.
+
+\[
+p(x) = \frac{1}{(2\pi)^{d/2} |\Sigma|^{1/2}} \exp\left(-\frac{1}{2} (x - \mu)^T \Sigma^{-1} (x - \mu) \right)
+\]
+
+\begin{itemize}
+    \item $\mu = \mathbb{E}[x]$
+    \item $\Sigma_{ij} = \text{Cov}(x_i, x_j)$
+    \item $\Sigma$ is symmetric positive definite
+\end{itemize}
+
+\subsection*{Diagonal Covariance}
+
+If $\Sigma$ is diagonal, the components of $x$ are uncorrelated.
+
+\subsection*{Eigenvalue Decomposition}
+
+\[
+\Sigma = V \Lambda V^T
+\]
+where:
+\begin{itemize}
+    \item $V$: matrix of eigenvectors
+    \item $\Lambda$: diagonal matrix of eigenvalues
+\end{itemize}
+
+\end{document}

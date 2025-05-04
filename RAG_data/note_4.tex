@@ -1,0 +1,105 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Regularization in Regression}
+\date{Jan 29, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Linear Regression}
+
+Given input vector $x \in \mathbb{R}^d$, the linear prediction is:
+\[
+\hat{y} = w_0 + w_1 x_1 + w_2 x_2 + \cdots + w_d x_d = w^T x
+\]
+
+\subsection*{Univariate Polynomial Fitting}
+
+Polynomial fitting of degree $m$:
+\[
+y = w_0 + w_1 x + w_2 x^2 + \cdots + w_m x^m
+\]
+This is equivalent to linear regression over a transformed feature vector $z = [1, x, x^2, \dots, x^m]^T$:
+\[
+\hat{y} = w^T z
+\]
+
+\section*{Closed-form Solution}
+
+Given data matrix $X$ and labels $y$:
+
+\[
+w = (X^T X)^{-1} X^T y
+\]
+
+Prediction on training data:
+\[
+\hat{y} = X w = X (X^T X)^{-1} X^T y
+\]
+
+\subsection*{SVD Interpretation}
+
+Let the singular value decomposition of $X$ be:
+\[
+X = U \Sigma V^T
+\]
+
+Then:
+\[
+X^T X = V \Sigma^T \Sigma V^T, \quad (X^T X)^{-1} = V (\Sigma^T \Sigma)^{-1} V^T
+\]
+\[
+w = V \Sigma^{-1} U^T y
+\]
+
+\section*{Ridge Regression}
+
+\textbf{Objective:}
+\[
+\min_w \|Xw - y\|_2^2 + \lambda \|w\|_2^2
+\]
+
+\textbf{Solution:}
+\[
+w = (X^T X + \lambda I)^{-1} X^T y
+\]
+
+Ridge regression shrinks the components of $w$ corresponding to small singular values of $X$.
+
+\subsection*{Shrinkage Viewpoint}
+
+Let $X = U \Sigma V^T$, then:
+\[
+w_{\text{ridge}} = V D_\lambda \Sigma^{-1} U^T y
+\]
+where $D_\lambda$ shrinks singular values:
+\[
+D_{\lambda, i} = \frac{\sigma_i}{\sigma_i^2 + \lambda}
+\]
+
+This is a form of \textit{soft shrinkage}. Hard shrinkage occurs in truncated SVD, where small singular values are set to 0.
+
+\section*{Lasso Regression}
+
+\textbf{Objective:}
+\[
+\min_w \|Xw - y\|_2^2 + \lambda \|w\|_1
+\]
+
+\textbf{Constrained Form:}
+\[
+\min_w \|Xw - y\|_2^2 \quad \text{subject to } \|w\|_1 \leq r
+\]
+
+\subsection*{Properties}
+
+\begin{itemize}
+    \item Encourages sparsity: many $w_i = 0$
+    \item Useful for producing parsimonious models
+    \item Geometrically, Lasso tends to select solutions on the corners of $\ell_1$-ball
+\end{itemize}
+
+\end{document}

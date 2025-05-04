@@ -1,0 +1,92 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Classification: First Lecture}
+\date{Feb 10, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Classification Problem}
+
+Given data points $x \in \mathbb{R}^d$ with class labels $y \in \{C_1, C_2, \dots, C_k\}$, the goal is to learn a function $f(x)$ that predicts the class label of a new test point.
+
+\section*{Decision Boundary}
+
+For two classes with means $\mu_1$, $\mu_2$:
+
+\begin{itemize}
+    \item The set of points equidistant from the means is:
+    \[
+    \{x : \|x - \mu_1\| = \|x - \mu_2\|\}
+    \]
+    \item This corresponds to a hyperplane halfway between the two means.
+    \item Equation of the hyperplane:
+    \[
+    (x - \mu_1)^T(x - \mu_1) = (x - \mu_2)^T(x - \mu_2)
+    \Rightarrow w^T x + w_0 = 0
+    \]
+    where $w = \mu_1 - \mu_2$, and $w_0$ depends on $\|\mu_1\|^2 - \|\mu_2\|^2$.
+    \item $w$ is normal to the hyperplane.
+\end{itemize}
+
+\section*{Bayes Decision Rule}
+
+For each class $C_i$, we compute the posterior:
+\[
+p(C_i | x) = \frac{p(x | C_i) p(C_i)}{p(x)}
+\]
+Decision rule:
+\[
+\hat{y} = \arg\max_i p(C_i | x)
+\]
+
+\textbf{Maximum A Posteriori (MAP) Rule:}
+\[
+\hat{y} = \arg\max_i \log p(x | C_i) + \log p(C_i)
+\]
+
+\section*{Gaussian Model for Likelihood}
+
+Assume:
+\[
+p(x | C_i) = \frac{1}{(2\pi)^{d/2} |\Sigma|^{1/2}} \exp\left( -\frac{1}{2}(x - \mu_i)^T \Sigma^{-1} (x - \mu_i) \right)
+\]
+
+Then:
+\[
+\log p(x | C_i) = -\frac{1}{2} (x - \mu_i)^T \Sigma^{-1} (x - \mu_i) - \frac{1}{2} \log |\Sigma| + \text{const}
+\]
+
+\section*{Cases}
+
+\subsection*{Case I: Shared spherical covariance $\Sigma = \sigma^2 I$}
+
+\[
+\log p(x | C_i) = -\frac{1}{2\sigma^2} \|x - \mu_i\|^2 + \log p(C_i)
+\]
+\[
+\Rightarrow \text{Decision surface is linear}
+\]
+
+\subsection*{Case II: Shared full covariance matrix $\Sigma$}
+
+\[
+\log p(x | C_i) = -\frac{1}{2}(x - \mu_i)^T \Sigma^{-1} (x - \mu_i) + \log p(C_i)
+\]
+\[
+\Rightarrow \text{Still linear decision surface}
+\]
+
+\subsection*{Case III: Class-dependent covariance $\Sigma_i$}
+
+\[
+\log p(x | C_i) = -\frac{1}{2}(x - \mu_i)^T \Sigma_i^{-1} (x - \mu_i) - \frac{1}{2} \log |\Sigma_i| + \log p(C_i)
+\]
+\[
+\Rightarrow \text{Quadratic decision surface}
+\]
+
+\end{document}

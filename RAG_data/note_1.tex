@@ -1,0 +1,94 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Lecture 1: Linear Regression}
+\date{Jan 15, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Examples of Regression Tasks}
+
+\begin{itemize}
+    \item Predict levels of PSA from various measurements on the prostate.
+    \item Netflix movie recommendation: predict user ratings (e.g., for ``Breaking Bad'') --- Netflix Prize dataset.
+    \item Predict whether an email is spam or not (classification when $Y$ is categorical, regression when $Y$ is real-valued).
+\end{itemize}
+
+Let the training data be $\{(x_i, y_i)\}_{i=1}^n$, where $x_i \in \mathbb{R}^d$, $y_i \in \mathbb{R}$.
+
+\section*{Linear Regression Model}
+
+We model:
+\[
+y_i = w_0 + w_1 x_{i1} + w_2 x_{i2} + \cdots + w_d x_{id} = x_i^T w
+\]
+where $w \in \mathbb{R}^d$ is the weight vector.
+
+Prediction:
+\[
+\hat{y}_i = x_i^T w
+\]
+
+Goal: Find $w$ such that the error between predictions $\hat{y}_i$ and true outputs $y_i$ is small.
+
+\section*{Loss Function (Objective)}
+
+Minimize the squared error:
+\[
+F(w) = \sum_{i=1}^n (y_i - x_i^T w)^2 = \|Xw - y\|^2
+\]
+where $X \in \mathbb{R}^{n \times d}$ is the design matrix, and $y \in \mathbb{R}^n$ is the target vector.
+
+\section*{Analytic Solution via Normal Equations}
+
+To minimize $F(w)$, set gradient to zero:
+\[
+\nabla F(w) = 2X^T (Xw - y) = 0
+\Rightarrow X^T X w = X^T y
+\]
+
+If $X^T X$ is nonsingular, the solution is:
+\[
+w = (X^T X)^{-1} X^T y
+\]
+
+\section*{Geometric Viewpoint}
+
+We are solving a system of $d$ linear equations in $d$ unknowns:
+\[
+A w = b, \quad \text{where } A = X^T X, \quad b = X^T y
+\]
+
+Solve using Gaussian elimination, LU decomposition, or Cholesky decomposition (since $A$ is symmetric and positive semi-definite).
+
+\subsection*{Cholesky Decomposition}
+
+Let $A = LL^T$ where $L$ is lower triangular. Then:
+\[
+LL^T w = b
+\Rightarrow \text{solve } L z = b \text{ (forward substitution)}, \quad L^T w = z \text{ (backward substitution)}
+\]
+
+\section*{Numerical Considerations}
+
+\begin{itemize}
+    \item $(X^T X)^{-1}$ exists only if $X^T X$ is nonsingular.
+    \item If condition number of $X^T X$ is large, it is close to singular $\Rightarrow$ ill-conditioned.
+    \item Solving normal equations can be unstable when $X^T X$ is poorly conditioned.
+\end{itemize}
+
+\section*{Alternative Methods}
+
+\begin{itemize}
+    \item QR decomposition of $X$: $X = QR$, then solve $Rw = Q^T y$
+    \item SVD of $X$: $X = U \Sigma V^T$
+    \item SVD is most accurate but computationally expensive
+\end{itemize}
+
+\end{document}

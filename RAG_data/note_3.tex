@@ -1,0 +1,90 @@
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{SVD and Regression}
+\date{Jan 27, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Singular Value Decomposition (SVD)}
+
+Given a matrix $A \in \mathbb{R}^{m \times n}$, the singular value decomposition is:
+\[
+A = U \Sigma V^T
+\]
+where:
+\begin{itemize}
+    \item $U \in \mathbb{R}^{m \times m}$ is an orthogonal matrix (left singular vectors)
+    \item $V \in \mathbb{R}^{n \times n}$ is an orthogonal matrix (right singular vectors)
+    \item $\Sigma \in \mathbb{R}^{m \times n}$ is a diagonal matrix with singular values $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r > 0$
+\end{itemize}
+
+\subsection*{Properties}
+
+\[
+U^T U = I, \quad V^T V = I
+\]
+
+\[
+A^T A = V \Sigma^T \Sigma V^T \quad \text{(Eigenvalue decomposition of } A^T A)
+\]
+\[
+A A^T = U \Sigma \Sigma^T U^T \quad \text{(Eigenvalue decomposition of } A A^T)
+\]
+
+\subsection*{Thin / Reduced SVD}
+
+If $A$ has rank $r$, then:
+\[
+A = U_r \Sigma_r V_r^T
+\]
+where:
+\begin{itemize}
+    \item $U_r \in \mathbb{R}^{m \times r}$
+    \item $\Sigma_r \in \mathbb{R}^{r \times r}$
+    \item $V_r \in \mathbb{R}^{n \times r}$
+\end{itemize}
+
+\subsection*{Fundamental Subspaces of $A$}
+
+\begin{itemize}
+    \item Column space: $\text{Col}(A) = \text{span}(u_1, \dots, u_r)$
+    \item Row space: $\text{Row}(A) = \text{span}(v_1, \dots, v_r)$
+    \item Null space: $\text{Null}(A) = \text{span}(v_{r+1}, \dots, v_n)$
+    \item Left null space: $\text{Null}(A^T) = \text{span}(u_{r+1}, \dots, u_m)$
+\end{itemize}
+
+\subsection*{Truncated SVD}
+
+For rank-$k$ approximation of $A$:
+\[
+A_k = U_k \Sigma_k V_k^T
+\]
+This gives the best rank-$k$ approximation in the Frobenius norm:
+\[
+A_k = \arg\min_{\text{rank}(B) = k} \|A - B\|_F
+\]
+
+\section*{SVD and Least Squares}
+
+The least squares solution for:
+\[
+\min_x \|Ax - y\|_2^2
+\]
+is given by:
+\[
+x = V \Sigma^{-1} U^T y
+\]
+if $A = U \Sigma V^T$.
+
+\subsection*{Projection}
+
+Let $A = U \Sigma V^T$, then the projection of $y$ onto the range space of $A$ is:
+\[
+P = UU^T, \quad \hat{y} = UU^T y
+\]
+
+\end{document}
